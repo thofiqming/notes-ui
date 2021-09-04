@@ -1,0 +1,62 @@
+<div>
+  <h4 id="page-heading">
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-notes"
+        [routerLink]="['/notes/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Notes </span>
+      </button>
+    </div>
+  </h4>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="notes?.length === 0">
+    <span>No notes found</span>
+  </div>
+
+  <div class="table-responsive row" id="entities" *ngIf="notes && notes.length > 0">
+    <div class="col-md-5">
+      <table class="table table-hover" aria-describedby="page-heading">
+        <thead>
+          <span class="text-center font-weight-bold">Notes</span>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+               [infiniteScrollDistance]="0">
+        <tr *ngFor="let notes of notes; trackBy: trackId" data-cy="entityTable">
+          <td>{{ notes.content }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/notes', notes.id, 'view']" class="btn btn-info btn-sm">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/notes', notes.id, 'edit']" class="btn btn-sm">
+                <fa-icon icon="pencil-alt"></fa-icon>
+              </button>
+
+              <button type="submit" (click)="delete(notes)" class="btn btn-sm">
+                <fa-icon icon="trash-alt"></fa-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div>
+  <h4 id="page-heading">
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-notes"
+        [routerLink]="['/notes/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Notes </span>
+      </button>
+    </div>
+  </h4>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="notes?.length === 0">
+    <span>No notes found</span>
+  </div>
+
+  <div>
+    <span class="text-center font-weight-bold">Notes</span>
+  </div>
+  <div class="row" id="entities" *ngIf="notes && notes.length > 0">
+
+    <div class="table-responsive border col-md-5">
+      <table class="table table-hover" aria-describedby="page-heading">
+        <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+               [infiniteScrollDistance]="0">
+        <tr *ngFor="let notes of notes; trackBy: trackId" data-cy="entityTable" (click)="selectRow(notes)">
+          <td>{{ notes.content }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="table-responsive col-md-7" style="margin-top: 0%" *ngIf="details">
+      <table>
+        <div class="text-right btn-group">
+          <button type="submit" [routerLink]="['/notes', details.id, 'edit']" class="btn btn-sm">
+            <fa-icon icon="pencil-alt" class="fa-2x"></fa-icon>
+          </button>
+          <button type="submit" (click)="delete(details)" class="btn btn-sm">
+            <fa-icon icon="trash-alt" class="fa-2x"></fa-icon>
+          </button>
+        </div>
+        <tr>
+          {{details?.content}}
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+</div>

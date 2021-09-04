@@ -1,0 +1,16 @@
+{
+  "fields": [
+    {
+      "fieldName": "content",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMinlength": "1",
+      "fieldValidateRulesMaxlength": "3000"
+    }
+  ],
+  "relationships": [],
+  "readOnly": false,
+  "pagination": "infinite-scroll",
+  "name": "Notes",
+  "changelogDate": "20210903124302"
+}
