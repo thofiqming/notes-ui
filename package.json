@@ -57,9 +57,9 @@
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@ng-bootstrap/ng-bootstrap": "9.1.0",
-    "@types/crypto-js": "^4.0.2",
     "bootstrap": "4.6.0",
-    "crypto-js": "^4.1.1",
+    "crypto": "^1.0.1",
+    "crypto-js": "^3.1.9-1",
     "dayjs": "1.10.4",
     "ngx-infinite-scroll": "10.0.1",
     "ngx-webstorage": "7.0.1",
@@ -78,12 +78,14 @@
     "@angular/service-worker": "11.2.7",
     "@types/chai": "4.2.14",
     "@types/chai-string": "1.4.2",
+    "@types/crypto-js": "^4.0.2",
     "@types/jest": "26.0.22",
     "@types/mocha": "8.2.0",
     "@types/node": "14.14.37",
     "@types/selenium-webdriver": "4.0.11",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "4.20.0",
+    "aes-256-gcm": "^1.0.3",
     "browser-sync": "2.26.14",
     "browser-sync-webpack-plugin": "2.3.0",
     "chai": "4.2.0",
@@ -116,6 +118,11 @@
     "webpack-bundle-analyzer": "4.4.0",
     "webpack-merge": "5.7.3",
     "webpack-notifier": "1.13.0"
+  },
+  "browser": {
+    "aes-256-gcm": false,
+    "crypto": false,
+    "stream": false
   },
   "engines": {
     "node": ">=14.16.0"

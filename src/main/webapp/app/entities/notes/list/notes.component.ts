@@ -107,7 +107,9 @@ export class NotesComponent implements OnInit {
     if (data) {
       for (const d of data) {
         if (d.content != null) {
-          d.content = this.appCryptoService.decrypt(d.content);
+          this.notesService.getDecryptedContent(d).then(val => {
+            d.content = val;
+          });
         }
         this.notes.push(d);
       }

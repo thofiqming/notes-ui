@@ -13,7 +13,8 @@
     "lib": ["es2018", "dom"],
     "baseUrl": "./",
     "paths": {
-      "app/*": ["src/main/webapp/app/*"]
+      "app/*": ["src/main/webapp/app/*"],
+      "aes-256-gcm": ["./node_modules/aes-256-gcm/"]
     },
     "importHelpers": true,
     "downlevelIteration": true,

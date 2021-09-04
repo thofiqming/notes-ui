@@ -20,20 +20,19 @@ export class NotesService {
               private appCryptoService: AppCryptoService) {
   }
 
-
-  create(notes: INotes): Observable<EntityResponseType> {
-    this.updatedEncryptedContent(notes);
-    return this.http.post<INotes>(this.resourceUrl, notes, {observe: 'response'});
+  async create(notes: INotes): Promise<EntityResponseType> {
+    notes.content = await this.getEncryptedContent(notes).then(val => val);
+    return this.http.post<INotes>(this.resourceUrl, notes, {observe: 'response'}).toPromise();
   }
 
-  update(notes: INotes): Observable<EntityResponseType> {
-    this.updatedEncryptedContent(notes);
-    return this.http.put<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, {observe: 'response'});
+  async update(notes: INotes): Promise<EntityResponseType> {
+    notes.content = await this.getEncryptedContent(notes).then(val => val);
+    return this.http.put<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, {observe: 'response'}).toPromise();
   }
 
-  partialUpdate(notes: INotes): Observable<EntityResponseType> {
-    this.updatedEncryptedContent(notes);
-    return this.http.patch<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, {observe: 'response'});
+  async partialUpdate(notes: INotes): Promise<EntityResponseType> {
+    notes.content = await this.getEncryptedContent(notes).then(val => val);
+    return this.http.patch<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, {observe: 'response'}).toPromise();
   }
 
   find(id: number): Observable<EntityResponseType> {
@@ -66,9 +65,17 @@ export class NotesService {
     return notesCollection;
   }
 
-  updatedEncryptedContent(notes: INotes): void {
+  async getEncryptedContent(notes: INotes): Promise<string> {
+    const buffer = await this.appCryptoService.encryptMessage(notes.content);
+    // const encryptedContent = new TextDecoder().decode(buffer);
+    return btoa(String.fromCharCode.apply(null, Array.prototype.slice.call(new Uint8Array(buffer))));
+  }
+
+  async getDecryptedContent(notes: INotes): Promise<string> {
+    let decodeContent = '';
     if (notes.content != null) {
-      notes.content = this.appCryptoService.encrypt(notes.content);
+      decodeContent = atob(notes.content);
     }
+    return await this.appCryptoService.decryptMessage(decodeContent);
   }
 }

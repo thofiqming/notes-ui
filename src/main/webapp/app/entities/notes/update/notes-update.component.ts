@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import {from, Observable} from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { INotes, Notes } from '../notes.model';
@@ -36,9 +36,9 @@ export class NotesUpdateComponent implements OnInit {
     this.isSaving = true;
     const notes = this.createFromForm();
     if (notes.id !== undefined) {
-      this.subscribeToSaveResponse(this.notesService.update(notes));
+      this.subscribeToSaveResponse(from(this.notesService.update(notes)));
     } else {
-      this.subscribeToSaveResponse(this.notesService.create(notes));
+      this.subscribeToSaveResponse(from(this.notesService.create(notes)));
     }
   }
 
