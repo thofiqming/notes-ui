@@ -1,44 +1,52 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { INotes, getNotesIdentifier } from '../notes.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getNotesIdentifier, INotes} from '../notes.model';
+import {AppCryptoService} from "app/core/crypto/app-crypto.service";
 
 export type EntityResponseType = HttpResponse<INotes>;
 export type EntityArrayResponseType = HttpResponse<INotes[]>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class NotesService {
   public resourceUrl = this.applicationConfigService.getEndpointFor('api/notes');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient,
+              private applicationConfigService: ApplicationConfigService,
+              private appCryptoService: AppCryptoService) {
+  }
+
 
   create(notes: INotes): Observable<EntityResponseType> {
-    return this.http.post<INotes>(this.resourceUrl, notes, { observe: 'response' });
+    this.updatedEncryptedContent(notes);
+    return this.http.post<INotes>(this.resourceUrl, notes, {observe: 'response'});
   }
 
   update(notes: INotes): Observable<EntityResponseType> {
-    return this.http.put<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, { observe: 'response' });
+    this.updatedEncryptedContent(notes);
+    return this.http.put<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, {observe: 'response'});
   }
 
   partialUpdate(notes: INotes): Observable<EntityResponseType> {
-    return this.http.patch<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, { observe: 'response' });
+    this.updatedEncryptedContent(notes);
+    return this.http.patch<INotes>(`${this.resourceUrl}/${getNotesIdentifier(notes) as number}`, notes, {observe: 'response'});
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<INotes>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<INotes>(`${this.resourceUrl}/${id}`, {observe: 'response'});
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<INotes[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<INotes[]>(this.resourceUrl, {params: options, observe: 'response'});
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.delete(`${this.resourceUrl}/${id}`, {observe: 'response'});
   }
 
   addNotesToCollectionIfMissing(notesCollection: INotes[], ...notesToCheck: (INotes | null | undefined)[]): INotes[] {
@@ -56,5 +64,11 @@ export class NotesService {
       return [...notesToAdd, ...notesCollection];
     }
     return notesCollection;
+  }
+
+  updatedEncryptedContent(notes: INotes): void {
+    if (notes.content != null) {
+      notes.content = this.appCryptoService.encrypt(notes.content);
+    }
   }
 }

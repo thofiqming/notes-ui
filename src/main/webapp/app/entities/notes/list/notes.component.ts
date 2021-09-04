@@ -8,6 +8,7 @@ import {ITEMS_PER_PAGE} from 'app/config/pagination.constants';
 import {NotesService} from '../service/notes.service';
 import {NotesDeleteDialogComponent} from '../delete/notes-delete-dialog.component';
 import {ParseLinks} from 'app/core/util/parse-links.service';
+import {AppCryptoService} from "app/core/crypto/app-crypto.service";
 
 @Component({
   selector: 'jhi-notes',
@@ -24,7 +25,10 @@ export class NotesComponent implements OnInit {
   ascending: boolean;
   details: INotes | undefined;
 
-  constructor(protected notesService: NotesService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(protected notesService: NotesService,
+              protected modalService: NgbModal,
+              protected parseLinks: ParseLinks,
+              protected appCryptoService: AppCryptoService) {
     this.notes = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -102,8 +106,12 @@ export class NotesComponent implements OnInit {
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
       for (const d of data) {
+        if (d.content != null) {
+          d.content = this.appCryptoService.decrypt(d.content);
+        }
         this.notes.push(d);
       }
     }
   }
+
 }
