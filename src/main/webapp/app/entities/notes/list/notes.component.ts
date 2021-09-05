@@ -36,7 +36,7 @@ export class NotesComponent implements OnInit {
       last: 0,
     };
     this.predicate = 'id';
-    this.ascending = true;
+    this.ascending = false;
   }
 
   loadAll(): void {
