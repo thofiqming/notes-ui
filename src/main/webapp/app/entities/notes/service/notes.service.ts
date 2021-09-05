@@ -67,7 +67,6 @@ export class NotesService {
 
   async getEncryptedContent(notes: INotes): Promise<string> {
     const buffer = await this.appCryptoService.encryptMessage(notes.content);
-    // const encryptedContent = new TextDecoder().decode(buffer);
     return btoa(String.fromCharCode.apply(null, Array.prototype.slice.call(new Uint8Array(buffer))));
   }
 

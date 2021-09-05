@@ -90,7 +90,7 @@ export class NotesComponent implements OnInit {
     });
   }
 
-  selectRow(notes: INotes, event: any): void {
+  selectRow(notes: INotes): void {
     this.details = notes;
   }
 

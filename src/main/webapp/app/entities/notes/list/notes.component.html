@@ -40,7 +40,7 @@
         <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
                [infiniteScrollDistance]="0">
         <tr *ngFor="let notes of notes; trackBy: trackId" data-cy="entityTable"
-            [class.alert-success]="notes.id === details?.id" (click)="selectRow(notes, $event)">
+            [class.alert-success]="notes.id === details?.id" (click)="selectRow(notes)">
           <td>{{ notes.content }}</td>
         </tr>
         </tbody>

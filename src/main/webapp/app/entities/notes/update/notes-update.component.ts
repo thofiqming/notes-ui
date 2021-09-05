@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 import {from, Observable} from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {finalize} from 'rxjs/operators';
 
-import { INotes, Notes } from '../notes.model';
-import { NotesService } from '../service/notes.service';
+import {INotes, Notes} from '../notes.model';
+import {NotesService} from '../service/notes.service';
 
 @Component({
   selector: 'jhi-notes-update',
@@ -20,11 +20,19 @@ export class NotesUpdateComponent implements OnInit {
     content: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(3000)]],
   });
 
-  constructor(protected notesService: NotesService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(protected notesService: NotesService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ notes }) => {
-      this.updateForm(notes);
+    this.activatedRoute.data.subscribe(({notes}) => {
+      if (notes.content) {
+        this.notesService.getDecryptedContent(notes).then(val => {
+          notes.content = val;
+          this.updateForm(notes);
+        })
+      } else {
+        this.updateForm(notes);
+      }
     });
   }
 

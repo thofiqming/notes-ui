@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {IV, MASTER_SECRET, SALT} from "app/app.constants";
 
 declare function encryptData(text: string, key: string): void;
 
@@ -7,8 +8,8 @@ declare function encryptData(text: string, key: string): void;
 })
 export class AppCryptoService {
 
-  salt = window.crypto.getRandomValues(new Uint8Array(16));
-  iv = window.crypto.getRandomValues(new Uint8Array(12));
+  salt = SALT;
+  iv = IV;
 
   // @ts-ignore
   private key: CryptoKey;
@@ -18,7 +19,8 @@ export class AppCryptoService {
   }
 
   async init() {
-    await this.getEncryptionKey("secret").then(val => this.key = val);
+    //TODO need to replace secret with user actual password
+    await this.getEncryptionKey(MASTER_SECRET).then(val => this.key = val);
   }
 
   getMessageEncoding(content: string | undefined): Uint8Array {
