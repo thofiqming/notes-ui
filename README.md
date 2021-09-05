@@ -1,5 +1,5 @@
 # NotesUi
-
+Simple note application with AES Data encryption
 
 ## Development
 
