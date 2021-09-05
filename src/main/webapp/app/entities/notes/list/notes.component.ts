@@ -85,12 +85,12 @@ export class NotesComponent implements OnInit {
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
         this.reset();
+        this.details = undefined;
       }
     });
   }
 
-  selectRow(notes: INotes): void {
-    // eslint-disable-next-line no-console
+  selectRow(notes: INotes, event: any): void {
     this.details = notes;
   }
 

@@ -14,29 +14,33 @@
         [routerLink]="['/notes/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Notes </span>
+        <span> Create a new Note </span>
       </button>
     </div>
   </h4>
 
   <jhi-alert-error></jhi-alert-error>
 
-  <jhi-alert></jhi-alert>
-
   <div class="alert alert-warning" id="no-result" *ngIf="notes?.length === 0">
     <span>No notes found</span>
   </div>
 
-  <div>
-    <span class="text-center font-weight-bold">Notes</span>
+  <div class="row" *ngIf="notes && notes.length > 0">
+    <div class="col-md-5" style="text-align: center">
+      <span class="font-weight-bold">Notes</span>
+    </div>
   </div>
+
+
+
   <div class="row" id="entities" *ngIf="notes && notes.length > 0">
 
     <div class="table-responsive border col-md-5">
-      <table class="table table-hover" aria-describedby="page-heading">
+      <table id="notesTable" class="table table-hover" aria-describedby="page-heading">
         <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
                [infiniteScrollDistance]="0">
-        <tr *ngFor="let notes of notes; trackBy: trackId" data-cy="entityTable" (click)="selectRow(notes)">
+        <tr *ngFor="let notes of notes; trackBy: trackId" data-cy="entityTable"
+            [class.alert-success]="notes.id === details?.id" (click)="selectRow(notes, $event)">
           <td>{{ notes.content }}</td>
         </tr>
         </tbody>
@@ -44,16 +48,16 @@
     </div>
 
 
-    <div class="table-responsive col-md-7" style="margin-top: 0%" *ngIf="details">
+    <div class="table-responsive border col-md-7" style="margin-top: 0%" *ngIf="details">
+      <div class="" style="text-align: right; margin-right: 10%" >
+        <button type="submit" [routerLink]="['/notes', details.id, 'edit']" class="btn btn-sm">
+          <fa-icon icon="pencil-alt" class="fa-2x"></fa-icon>
+        </button>
+        <button type="submit" (click)="delete(details)" class="btn btn-sm">
+          <fa-icon icon="trash-alt" class="fa-2x"></fa-icon>
+        </button>
+      </div>
       <table>
-        <div class="text-right btn-group">
-          <button type="submit" [routerLink]="['/notes', details.id, 'edit']" class="btn btn-sm">
-            <fa-icon icon="pencil-alt" class="fa-2x"></fa-icon>
-          </button>
-          <button type="submit" (click)="delete(details)" class="btn btn-sm">
-            <fa-icon icon="trash-alt" class="fa-2x"></fa-icon>
-          </button>
-        </div>
         <tr>
           {{details?.content}}
         </tr>
@@ -63,3 +67,4 @@
   </div>
 
 </div>
+

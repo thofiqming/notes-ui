@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-notes-heading" data-cy="NotesCreateUpdateHeading">Create or edit a Notes</h2>
+      <h2 id="jhi-notes-heading" data-cy="NotesCreateUpdateHeading">Note</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -13,7 +13,7 @@
 
         <div class="form-group">
           <label class="form-control-label" for="field_content">Content</label>
-          <input type="text" class="form-control" name="content" id="field_content" data-cy="content" formControlName="content" />
+          <textarea type="text" class="form-control" rows="5" name="content" id="field_content" data-cy="content" formControlName="content" > </textarea>
           <div *ngIf="editForm.get('content')!.invalid && (editForm.get('content')!.dirty || editForm.get('content')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('content')?.errors?.required"> This field is required. </small>
             <small class="form-text text-danger" *ngIf="editForm.get('content')?.errors?.minlength">
