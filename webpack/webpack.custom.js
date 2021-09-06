@@ -81,9 +81,7 @@ module.exports = (config, options, targetOptions) => {
     );
   }
 
-  const patterns = [
-    // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
-  ];
+  const patterns = [];
 
   if (patterns.length > 0) {
     config.plugins.push(new CopyWebpackPlugin({ patterns }));
@@ -96,19 +94,12 @@ module.exports = (config, options, targetOptions) => {
         // APP_VERSION is passed as an environment variable from the Gradle / Maven build tasks.
         VERSION: `'${process.env.hasOwnProperty('APP_VERSION') ? process.env.APP_VERSION : 'DEV'}'`,
         DEBUG_INFO_ENABLED: config.mode === 'development',
-        // The root URL for API calls, ending with a '/' - for example: `"https://www.jhipster.tech:8081/myservice/"`.
-        // If this URL is left empty (""), then it will be relative to the current context.
-        // If you use an API server, in `prod` mode, you will need to enable CORS
-        // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
         SERVER_API_URL: `''`,
       },
     })
   );
 
-  config = merge(
-    // jhipster-needle-add-webpack-config - JHipster will add custom config
-    config
-  );
+  config = merge(config);
 
   return config;
 };

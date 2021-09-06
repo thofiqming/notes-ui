@@ -25,7 +25,6 @@
           </span>
         </a>
       </li>
-      <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
       <li
         *ngSwitchCase="true"
         ngbDropdown
@@ -53,7 +52,6 @@
               <span>Notes</span>
             </a>
           </li>
-          <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
       </li>
       <li
@@ -83,7 +81,6 @@
               <span>API</span>
             </a>
           </li>
-          <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           <li *ngIf="!inProduction">
             <a class="dropdown-item" href="./h2-console/" target="_tab" (click)="collapseNavbar()">
               <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
